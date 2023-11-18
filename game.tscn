@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bgfn1jtwgyuhk"]
+[gd_scene load_steps=8 format=3 uid="uid://bgfn1jtwgyuhk"]
 
 [ext_resource type="Script" path="res://game.cs" id="1_dusti"]
-[ext_resource type="PackedScene" uid="uid://04tlyr6loqb4" path="res://main_menu.tscn" id="2_t4sc5"]
 [ext_resource type="Script" path="res://DitherRect.cs" id="3_r1t8g"]
 [ext_resource type="Script" path="res://FadeRect.cs" id="4_tf07f"]
 [ext_resource type="Shader" path="res://palette_screen_dither.gdshader" id="6_ehbey"]
@@ -22,9 +21,8 @@ shader_parameter/pixel_scale = 2.0
 [node name="Game" type="Node2D"]
 script = ExtResource("1_dusti")
 
-[node name="MainMenu" parent="." instance=ExtResource("2_t4sc5")]
-
 [node name="ShaderLayer" type="CanvasLayer" parent="."]
+layer = 100
 
 [node name="FadeRect" type="ColorRect" parent="ShaderLayer"]
 material = SubResource("ShaderMaterial_4fpqj")

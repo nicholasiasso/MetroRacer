@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://04tlyr6loqb4"]
+[gd_scene load_steps=20 format=3 uid="uid://04tlyr6loqb4"]
 
 [ext_resource type="Script" path="res://MainMenu.cs" id="1_pl8th"]
 [ext_resource type="Shader" path="res://background.gdshader" id="2_un80f"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://b5g8wjpp3eg60" path="res://streetlight.tscn" id="6_elur8"]
 [ext_resource type="Texture2D" uid="uid://cladx3v3rn0nd" path="res://assets/new_motorcycle.png" id="7_7gqq1"]
 [ext_resource type="Texture2D" uid="uid://ejujyfcbxdbf" path="res://assets/headlight.png" id="8_2uudh"]
+[ext_resource type="Script" path="res://MenuMotorcycle.cs" id="8_x0agm"]
+[ext_resource type="Texture2D" uid="uid://cfjvesxdkaxke" path="res://assets/menu_motorcycle_brake_light.png" id="9_8fcp4"]
 [ext_resource type="Theme" uid="uid://hh512bs6ola3" path="res://mainTheme.tres" id="10_rlct3"]
 [ext_resource type="LabelSettings" uid="uid://bd0mbmbvhcein" path="res://menuLabelSettings.tres" id="11_t34ai"]
 [ext_resource type="Script" path="res://MenuLabel.cs" id="12_elmp6"]
@@ -38,6 +40,96 @@ shader_parameter/bright_color = Color(1, 1, 1, 1)
 font_size = 100
 shadow_size = 40
 shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_d402v"]
+resource_name = "playGameAnimation"
+length = 4.0
+step = 0.01
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("World/Motorcycle/Headlight")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.62, 0.64, 0.66, 0.68, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"values": [{
+"args": [],
+"method": &"show"
+}, {
+"args": [],
+"method": &"hide"
+}, {
+"args": [],
+"method": &"show"
+}, {
+"args": [],
+"method": &"hide"
+}, {
+"args": [],
+"method": &"show"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("World/Motorcycle")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.1, 1.7, 2, 3.61),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": [500.0],
+"method": &"SetAcceleration"
+}, {
+"args": [0.0],
+"method": &"SetAcceleration"
+}, {
+"args": [1400.0],
+"method": &"SetAcceleration"
+}, {
+"args": [],
+"method": &"Stop"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("World/Motorcycle/MenuMotorcycleBrakeLight")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"show"
+}]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3.99, 4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"EndScene"
+}, {
+"args": [],
+"method": &"EndScene"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m07kp"]
+_data = {
+"playGameAnimation": SubResource("Animation_d402v")
+}
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_pl8th")
@@ -76,8 +168,16 @@ position = Vector2(1036, 362)
 position = Vector2(155, 604)
 scale = Vector2(0.183333, 0.183333)
 texture = ExtResource("7_7gqq1")
+script = ExtResource("8_x0agm")
+
+[node name="MenuMotorcycleBrakeLight" type="Sprite2D" parent="World/Motorcycle"]
+visible = false
+position = Vector2(-463.637, -152.728)
+scale = Vector2(0.596593, 0.596593)
+texture = ExtResource("9_8fcp4")
 
 [node name="Headlight" type="Sprite2D" parent="World/Motorcycle"]
+visible = false
 position = Vector2(3185.45, 10.9089)
 scale = Vector2(5.56108, 2.88401)
 texture = ExtResource("8_2uudh")
@@ -133,3 +233,8 @@ label_settings = ExtResource("11_t34ai")
 horizontal_alignment = 1
 script = ExtResource("12_elmp6")
 BaseText = "Quit"
+
+[node name="PlayGameAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_m07kp")
+}

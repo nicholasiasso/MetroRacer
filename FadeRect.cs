@@ -3,12 +3,14 @@ using System;
 
 public partial class FadeRect : ColorRect
 {
+	[Export] public float DefaultFadeSpeed = 5.0f;
+	[Export] public float FastFadeSpeed = 0.5f; 
 
 	private double fadeRatio = 0.0d;
 	private double targetFadeRatio = 1.0d;
 	private double stepPerSecond = 0.0d;
 	private bool isFading = false;
-
+	private Action onComplete;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -30,6 +32,11 @@ public partial class FadeRect : ColorRect
 				fadeRatio = targetFadeRatio;
 				this.stepPerSecond = 0.0d;
 				this.isFading = false;
+				if (this.onComplete != default)
+				{
+					this.onComplete();
+					this.onComplete = default;
+				}
 			}
 
 			this.UpdateFade();
@@ -42,18 +49,17 @@ public partial class FadeRect : ColorRect
 		this.UpdateFade();
 	}
 
-	public void TriggerFade(double targetFadeRatio, double durationSeconds)
+	public void TriggerFade(double targetFadeRatio, double durationSeconds, Action onComplete = default)
 	{
 		this.isFading = true;
+		this.onComplete = onComplete;
 		this.targetFadeRatio = targetFadeRatio;
 		if (durationSeconds == 0.0d) durationSeconds = 0.001d; 
 		this.stepPerSecond = (targetFadeRatio - fadeRatio) / durationSeconds;
-		GD.Print($"Setting StepPerSecond to {this.stepPerSecond}");
 	}
 
 	private void UpdateFade()
 	{
-		GD.Print($"Setting Fade to {this.fadeRatio}");
 		((ShaderMaterial)this.Material).SetShaderParameter("fadeRatio", (float)this.fadeRatio);
 	}
 }
