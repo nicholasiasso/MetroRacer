@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5g8wjpp3eg60"]
+
+[ext_resource type="Texture2D" uid="uid://rn3dywade4lt" path="res://assets/streetlight_metal.png" id="1_gswn0"]
+[ext_resource type="Texture2D" uid="uid://bjf8fcglcqgun" path="res://assets/streetlight_beam.png" id="2_5f0uy"]
+
+[node name="StreetlightMetal" type="Sprite2D"]
+position = Vector2(162, 361.5)
+scale = Vector2(1.26953, 1.13086)
+texture = ExtResource("1_gswn0")
+
+[node name="StreetlightBeam" type="Sprite2D" parent="."]
+position = Vector2(1.52588e-05, 2.21071)
+scale = Vector2(0.996923, 0.991364)
+texture = ExtResource("2_5f0uy")

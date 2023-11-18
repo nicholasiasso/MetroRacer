@@ -1,0 +1,135 @@
+[gd_scene load_steps=16 format=3 uid="uid://04tlyr6loqb4"]
+
+[ext_resource type="Script" path="res://MainMenu.cs" id="1_pl8th"]
+[ext_resource type="Shader" path="res://background.gdshader" id="2_un80f"]
+[ext_resource type="Script" path="res://Background.cs" id="3_7dfua"]
+[ext_resource type="Texture2D" uid="uid://bbg84wbsmffvw" path="res://assets/gradient.png" id="4_nfqga"]
+[ext_resource type="Script" path="res://Gradient.cs" id="5_opi78"]
+[ext_resource type="PackedScene" uid="uid://b5g8wjpp3eg60" path="res://streetlight.tscn" id="6_elur8"]
+[ext_resource type="Texture2D" uid="uid://cladx3v3rn0nd" path="res://assets/new_motorcycle.png" id="7_7gqq1"]
+[ext_resource type="Texture2D" uid="uid://ejujyfcbxdbf" path="res://assets/headlight.png" id="8_2uudh"]
+[ext_resource type="Theme" uid="uid://hh512bs6ola3" path="res://mainTheme.tres" id="10_rlct3"]
+[ext_resource type="LabelSettings" uid="uid://bd0mbmbvhcein" path="res://menuLabelSettings.tres" id="11_t34ai"]
+[ext_resource type="Script" path="res://MenuLabel.cs" id="12_elmp6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ya78y"]
+shader = ExtResource("2_un80f")
+shader_parameter/gradient_dist_from_center_ratio = 0.5
+shader_parameter/gradient_radius_ratio = 0.9
+shader_parameter/alpha = 1.0
+shader_parameter/angle_offset = 0.0
+shader_parameter/rotation_speed_mult = 0.6
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/bright_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dlheg"]
+shader = ExtResource("2_un80f")
+shader_parameter/gradient_dist_from_center_ratio = 0.3
+shader_parameter/gradient_radius_ratio = 0.4
+shader_parameter/alpha = 1.0
+shader_parameter/angle_offset = 0.0
+shader_parameter/rotation_speed_mult = -0.4
+shader_parameter/dark_color = Color(1, 1, 1, 0)
+shader_parameter/bright_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_07r4k"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fqi6p"]
+font_size = 100
+shadow_size = 40
+shadow_color = Color(0, 0, 0, 1)
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_pl8th")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Background" type="ColorRect" parent="World"]
+material = SubResource("ShaderMaterial_ya78y")
+offset_right = 1200.0
+offset_bottom = 650.0
+color = Color(1, 1, 1, 0)
+script = ExtResource("3_7dfua")
+
+[node name="Background2" type="ColorRect" parent="World"]
+material = SubResource("ShaderMaterial_dlheg")
+offset_right = 1200.0
+offset_bottom = 650.0
+color = Color(1, 1, 1, 0)
+script = ExtResource("3_7dfua")
+
+[node name="Gradient" type="Sprite2D" parent="World"]
+material = SubResource("ShaderMaterial_07r4k")
+position = Vector2(1355, 135)
+scale = Vector2(0.492309, 0.478084)
+texture = ExtResource("4_nfqga")
+script = ExtResource("5_opi78")
+
+[node name="Streetlights" type="Node2D" parent="World"]
+
+[node name="Streetlight" parent="World/Streetlights" instance=ExtResource("6_elur8")]
+
+[node name="Streetlight2" parent="World/Streetlights" instance=ExtResource("6_elur8")]
+position = Vector2(1036, 362)
+
+[node name="Motorcycle" type="Sprite2D" parent="World"]
+position = Vector2(155, 604)
+scale = Vector2(0.183333, 0.183333)
+texture = ExtResource("7_7gqq1")
+
+[node name="Headlight" type="Sprite2D" parent="World/Motorcycle"]
+position = Vector2(3185.45, 10.9089)
+scale = Vector2(5.56108, 2.88401)
+texture = ExtResource("8_2uudh")
+
+[node name="UICanvas" type="CanvasLayer" parent="."]
+
+[node name="TitleLabel" type="Label" parent="UICanvas"]
+offset_left = 280.0
+offset_top = 75.0
+offset_right = 924.0
+offset_bottom = 204.0
+theme = ExtResource("10_rlct3")
+text = "METRORACER"
+label_settings = SubResource("LabelSettings_fqi6p")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="UICanvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 500.0
+offset_top = 220.5
+offset_right = -500.0
+offset_bottom = -220.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayLabel" type="Label" parent="UICanvas/Buttons"]
+layout_mode = 2
+theme = ExtResource("10_rlct3")
+text = "Play"
+label_settings = ExtResource("11_t34ai")
+horizontal_alignment = 1
+script = ExtResource("12_elmp6")
+BaseText = "Play"
+
+[node name="OptionsLabel" type="Label" parent="UICanvas/Buttons"]
+layout_mode = 2
+theme = ExtResource("10_rlct3")
+text = "Options"
+label_settings = ExtResource("11_t34ai")
+horizontal_alignment = 1
+script = ExtResource("12_elmp6")
+BaseText = "Options"
+
+[node name="QuitLabel" type="Label" parent="UICanvas/Buttons"]
+layout_mode = 2
+theme = ExtResource("10_rlct3")
+text = "Quit
+"
+label_settings = ExtResource("11_t34ai")
+horizontal_alignment = 1
+script = ExtResource("12_elmp6")
+BaseText = "Quit"

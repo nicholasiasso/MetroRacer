@@ -1,0 +1,40 @@
+[gd_scene load_steps=9 format=3 uid="uid://bgfn1jtwgyuhk"]
+
+[ext_resource type="Script" path="res://game.cs" id="1_dusti"]
+[ext_resource type="PackedScene" uid="uid://04tlyr6loqb4" path="res://main_menu.tscn" id="2_t4sc5"]
+[ext_resource type="Script" path="res://DitherRect.cs" id="3_r1t8g"]
+[ext_resource type="Script" path="res://FadeRect.cs" id="4_tf07f"]
+[ext_resource type="Shader" path="res://palette_screen_dither.gdshader" id="6_ehbey"]
+[ext_resource type="Shader" path="res://sceneTransition.gdshader" id="13_yc4wq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4fpqj"]
+shader = ExtResource("13_yc4wq")
+shader_parameter/fadeRatio = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ycijt"]
+shader = ExtResource("6_ehbey")
+shader_parameter/dark_col = Color(0.0117647, 0.0313726, 0.109804, 1)
+shader_parameter/meddark_col = Color(0.466667, 0.113725, 0.14902, 1)
+shader_parameter/medbright_col = Color(0.705882, 0.364706, 0.14902, 1)
+shader_parameter/bright_col = Color(1, 0.803922, 0.815686, 1)
+shader_parameter/pixel_scale = 2.0
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_dusti")
+
+[node name="MainMenu" parent="." instance=ExtResource("2_t4sc5")]
+
+[node name="ShaderLayer" type="CanvasLayer" parent="."]
+
+[node name="FadeRect" type="ColorRect" parent="ShaderLayer"]
+material = SubResource("ShaderMaterial_4fpqj")
+offset_right = 1200.0
+offset_bottom = 650.0
+script = ExtResource("4_tf07f")
+
+[node name="DitherRect" type="ColorRect" parent="ShaderLayer"]
+material = SubResource("ShaderMaterial_ycijt")
+offset_right = 1200.0
+offset_bottom = 650.0
+color = Color(0.329412, 0.329412, 0.329412, 0)
+script = ExtResource("3_r1t8g")
