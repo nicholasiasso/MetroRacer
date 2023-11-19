@@ -1,17 +1,18 @@
 using Godot;
 using System;
+using System.Runtime.CompilerServices;
 
 public partial class game : Node2D
 {
 
-	private MainMenu ActiveScene;
+	private GameScene ActiveScene;
 	private FadeRect SceneFader;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		this.ActiveScene = GD.Load<PackedScene>("res://main_menu.tscn").Instantiate<MainMenu>();
-		this.ActiveScene.sendGameEvent = this.SendSceneEvent;
+		this.ActiveScene.SendGameEvent = this.SendSceneEvent;
 		this.AddChild(this.ActiveScene);
 
 		this.SceneFader = this.GetNode<FadeRect>("./ShaderLayer/FadeRect");
@@ -39,7 +40,21 @@ public partial class game : Node2D
 						this.ActiveScene.QueueFree();
 						this.ActiveScene = default;
 					});
-					break;
+				break;
+			case GoToRaceEvent goToRaceEvent:
+				this.SceneFader.TriggerFade(
+					1.0,
+					this.SceneFader.FastFadeSpeed,
+					() => 
+					{
+						this.RemoveChild(this.ActiveScene);
+						this.ActiveScene.QueueFree();
+						this.ActiveScene = GD.Load<PackedScene>("res://race.tscn").Instantiate<GameScene>();
+						this.ActiveScene.SendGameEvent = this.SendSceneEvent;
+						this.AddChild(this.ActiveScene);
+						this.SceneFader.TriggerFade(0.0, this.SceneFader.FastFadeSpeed);
+					});
+				break;
 			default:
 				GD.Print($"{nameof(game)}.{nameof(SendSceneEvent)}: Unrecognized {nameof(GameEvent)} {gameEvent.GetType().Name}");
 				break;
@@ -49,8 +64,6 @@ public partial class game : Node2D
 
 public class GameEvent
 {
-	public static string EndScene = nameof(EndScene);
-
 }
 
 public class EndSceneEvent : GameEvent
@@ -61,4 +74,8 @@ public class EndSceneEvent : GameEvent
 		this.nextScene = nextScene;
 		return;
 	}
+}
+
+public class GoToRaceEvent : GameEvent
+{
 }

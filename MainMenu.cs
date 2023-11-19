@@ -2,12 +2,10 @@ using Godot;
 using System;
 using System.Runtime.CompilerServices;
 
-public partial class MainMenu : Node2D
+public partial class MainMenu : GameScene
 {
 	private MenuLabel[] labels;
 	private int selected;
-
-	public Action<GameEvent> sendGameEvent { get; set; }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -65,9 +63,9 @@ public partial class MainMenu : Node2D
 		base._Input(@event);
 	}
 
-	public void EndScene()
+	public void GoToRace()
 	{
-		this.sendGameEvent(new EndSceneEvent("main_menu"));
+		this.SendGameEvent(new GoToRaceEvent());
 	}
 
 	private void PlayGame()

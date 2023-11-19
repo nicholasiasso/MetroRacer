@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://djw2papg5mrhk"]
+
+[ext_resource type="Texture2D" uid="uid://cywivjsrgvi2f" path="res://assets/race/motorcycle.png" id="1_65blg"]
+[ext_resource type="Script" path="res://race.cs" id="1_ocvbq"]
+[ext_resource type="Script" path="res://Motorcycle.cs" id="2_ucgm8"]
+[ext_resource type="Texture2D" uid="uid://bbg84wbsmffvw" path="res://assets/gradient.png" id="4_e8fc8"]
+[ext_resource type="Texture2D" uid="uid://cla45fkrrr13a" path="res://assets/race/motorcycle-tail-light.png" id="5_675aj"]
+[ext_resource type="Theme" uid="uid://hh512bs6ola3" path="res://mainTheme.tres" id="6_33kpy"]
+[ext_resource type="Script" path="res://BrakeLight.cs" id="6_w2ibr"]
+[ext_resource type="Script" path="res://SpeedLabel.cs" id="7_y8ckh"]
+
+[node name="Race" type="Node2D"]
+script = ExtResource("1_ocvbq")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Motorcycle" type="Node2D" parent="World"]
+position = Vector2(600, 569)
+script = ExtResource("2_ucgm8")
+
+[node name="Gradient" type="Sprite2D" parent="World/Motorcycle"]
+position = Vector2(0, -81)
+scale = Vector2(0.492188, 0.492188)
+texture = ExtResource("4_e8fc8")
+
+[node name="Motorcycle" type="Sprite2D" parent="World/Motorcycle"]
+position = Vector2(0, -84)
+texture = ExtResource("1_65blg")
+
+[node name="TailLight" type="Sprite2D" parent="World/Motorcycle"]
+position = Vector2(1, -79)
+texture = ExtResource("5_675aj")
+
+[node name="BrakeLight" type="Sprite2D" parent="World/Motorcycle"]
+visible = false
+position = Vector2(1, -79)
+texture = ExtResource("5_675aj")
+script = ExtResource("6_w2ibr")
+
+[node name="UICanvas" type="CanvasLayer" parent="."]
+
+[node name="SpeedLabel" type="Label" parent="UICanvas"]
+offset_left = 1126.0
+offset_top = 607.0
+offset_right = 1190.0
+offset_bottom = 642.0
+theme = ExtResource("6_33kpy")
+text = "129"
+script = ExtResource("7_y8ckh")
+
+[connection signal="SetBrakeLight" from="World/Motorcycle" to="World/Motorcycle/BrakeLight" method="onMotorcycleSetBrakeLight"]
+[connection signal="UpdateSpeed" from="World/Motorcycle" to="UICanvas/SpeedLabel" method="onMotorcycleUpdateSpeed"]
